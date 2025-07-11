@@ -1,0 +1,343 @@
+body{
+    font-family: Verdana;
+    background-image: url(../public/logo.jpg);
+     background-repeat: no-repeat;
+     background-position: center center;
+     background-size: cover;
+    
+}
+
+/* Posizionamento dei form: sinistra e destra */
+#registrati_div, #accedi_div {
+    position: absolute; /*Metto questi div in posizioni esatte che non influenzano la posizione degli altri elementi*/
+    top: 250px; /* distanza dal titolo */
+    width: 30%;
+    min-width: 280px;
+    min-height: 280px;
+    background-color: #28517a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 30px 80px 20px;
+    box-sizing: border-box;
+    border: 4px solid black;
+
+}
+
+
+#logo-container{
+    width:100%;
+    background-color: #0f4275;
+}
+
+/* Registrazione a sinistra */
+#registrati_div {
+    left: 14vw;
+}
+
+/* Login a destra */
+#accedi_div {
+    right: 14vw;
+}
+
+.form-title {
+
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 60px; /* aumenta spazio sotto il titolo */
+    color: rgb(235, 167, 20);
+    padding: 8px;
+}
+
+.username{
+    color:white ;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.email{
+    color:white ;
+    padding: 33px;
+    font-size: 20px;
+}
+
+.password{
+    color:white ;
+    padding: 13px;
+    font-size: 20px;
+}
+
+#submit-reg {
+    padding: 10px;
+    font-size: 15px;
+    margin: 10px;
+    padding: 10px;
+}
+
+#submit-log{
+    padding: 10px;
+    font-size: 15px;
+    margin: 26px;
+    padding: 10px;
+}
+
+.login-email{
+    color:white ;
+    padding: 35px;
+    font-size: 20px;
+
+}
+
+.login-password{
+    color:white ;
+    padding: 15px;
+    font-size: 20px;
+
+}
+
+.home-container {
+    font-family: Verdana;
+    background-color:  #0f4275;
+    display: grid;
+    grid-template-columns: 37vw 60vw;
+    grid-template-rows: 15vh 7.5vh 85vh;
+}
+
+.logo {
+    height: 14vh;
+    width: auto;
+    grid-row: 1;
+    grid-column: 1/3;
+    align-self:  center;
+    margin-left: 25%;
+}
+
+nav{
+    grid-row: 2;
+    grid-column: 1/3;
+    background-color: #0f4275;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+nav > button {
+    width: 50%;
+    background-color: #0f4275;
+    text-decoration: none;
+    font-size:  18px;
+    border: 0;
+    color: gold;
+
+}
+nav > button:hover {
+    background-color: #28517a; /* schiarisce del 20% */
+}
+
+.vertical-scroll{
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fce358;
+    padding-left: 5%;
+
+}
+.vertical-scroll > h2{
+    max-height: 5vh;
+}
+.mainnav{
+    background-color: lightgoldenrodyellow;
+    color: #0f4275;
+    padding: 3px;
+}
+ li{
+     list-style: none;
+     display: flex;
+     flex-direction: row;
+     gap: 1vw;
+ }
+.campo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+ img{
+    
+     width: 70%;
+     height: auto;
+     
+ }
+#form-recensioni{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+ textarea{
+     width: 70%
+ }
+
+.campo-buttons{
+     background-color:  #0f4275;
+     color: gold;
+     margin-top: 2vh;
+     font-size: 15px;
+    margin: 8px;
+    padding: 8px;
+ }
+
+
+ .box-recensioni{
+     background-color: lightgoldenrodyellow;
+     font-size: 1.3rem;
+ }
+
+.recensione-container{
+    border-bottom: 1px black solid;
+    font-size: 1rem;
+    /*height:12vh*/
+height:auto;
+}
+.recensione-header{
+    height:40%;
+    margin:1%;
+    padding:0;
+    display:flex;
+    flex-direction: row;
+    gap: 1vw;
+}
+.recensione-header h4, .recensione-header h5{
+    height:100%;
+    margin:0;
+    padding:0;
+}
+
+.recensione-header h5{
+    margin-top:0.3%;
+}
+
+.testo-recensione {
+    padding:0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.testo-recensione p {
+    width: 70%;
+    margin:1%;
+}
+
+.testo-recensione button{
+    background-color:  gold;
+    color: #0f4275;
+    font-size: 15px;
+    margin: 0;
+    padding: 4px;
+    height: 5vh;
+}
+
+
+
+
+ #prenota_div {
+    background-color:  #67adc9;
+    border: 4px solid black;
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2vh;
+    position: absolute; 
+    top: 240px; 
+    width: 24%;
+    padding: 60px; 
+
+}
+
+.prenota-form{
+    color: white;
+    font-size: 3.5vh;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    text-align: center;
+
+}
+ 
+.input-div {
+    margin-bottom: 1.2rem;
+    width: 100%;
+    font-size: 2vh;
+}
+
+.input-div label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.input-div input,
+.input-div select {
+    width: 100%;
+    height: 4.5vh;
+    font-size: 1rem;
+    padding: 0.3rem;
+}
+
+
+.button {
+    background-color: rgb(103, 226, 164);
+    font-weight: bold;
+    font-size: 2.2vh;
+    height: 6vh;
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+.button-link {
+    display: inline-block;
+    text-align: center;
+    background-color: rgb(241, 63, 63);
+    font-weight: bold;
+    font-size: 2vh;
+    padding: 0.8rem;
+    width: 100%;
+    text-decoration: none;
+    margin-top: 1rem;
+    border-radius: 12px;
+    color: black;
+    border: 2px solid black;
+}
+
+.container{
+    font-family: Verdana;
+    display: grid;
+    grid-template-columns: 37vw 68vw;
+    grid-template-rows: 15vh 7.5vh 85vh;
+    overflow-x: hidden;
+}
+
+#logo-container1{
+    width:300%;
+    background-color: #0f4275;
+
+}
+.nome-campo{
+    color: rgb(231, 207, 71);
+    font-size: 3.5vh;
+}
+
+.messaggio-successo {
+  color: green;
+  margin-top: 1em;
+}
+
+.messaggio-errore {
+  color: red;
+  margin-top: 1em;
+}
