@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-function PrenotaForm({ campoId,campo, onAnnulla, setCampoPrenotato}) {
+function PrenotaForm({campoId, campo, onAnnulla}) {
   const [formData, setFormData] = useState(null);
   const [messaggio, setMessaggio] = useState("");
-//È una funzione riutilizzabile per ogni input. 
-// Prende il name dell’input ("data" o "ora") e aggiorna solo quel campo.
-// prev => ({ ...prev, [name]: value }) significa: copia lo stato precedente e aggiorna solo il campo modificato. 
+
   const handleChange = (e) => {
     setFormData(e.target.value);
   };
 
-  //Passa i dati inseriti nello slot e l’id del campo alla funzione onConferma --> che poi invierà tutto al backend.
+  //Handler per la prenotazione. Fa richiesta a /campi/prenotazioni/:campoId. In base alla risposta ricevuta, imposta
+    //il messaggio di ritorno da mostrare all'utente. In caso di risposta positiva, viene incluso nel messaggio anche
+    //il codice di prenotazione generato dal backend.
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Combina giorno e orario nello slot tipo "17/07|10:00-12:00"
         try {
             const accessToken = localStorage.getItem('accessToken');
             const response = await fetch(`${API_BASE_URL}/campi/prenotazioni/${campoId}`, {
@@ -35,7 +34,7 @@ function PrenotaForm({ campoId,campo, onAnnulla, setCampoPrenotato}) {
         }
     };
 
-  //Chiama onAnnulla, che è in App.jsx, cambia la view e torna alla homepage.
+  //Chiama onAnnulla, in modo da visualizzare la pagina di Home
   const handleCancel = (e) => {
     e.preventDefault();
     onAnnulla();
@@ -73,7 +72,8 @@ function PrenotaForm({ campoId,campo, onAnnulla, setCampoPrenotato}) {
       <button type="submit" className="button">CONFERMA PRENOTAZIONE</button>
       <button onClick={handleCancel} className="button-link">ANNULLA</button>
        
-       {messaggio && (
+       {//paragrafo contenente il messaggio di ritorno, se il corrispondente stato è non vuoto
+           messaggio && (
   <p className={messaggio.includes("successo") ? "messaggio-successo" : "messaggio-errore"}>
     {messaggio}
   </p>

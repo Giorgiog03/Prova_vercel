@@ -7,10 +7,9 @@ body{
     
 }
 
-/* Posizionamento dei form: sinistra e destra */
 #registrati_div, #accedi_div {
-    position: absolute; /*Metto questi div in posizioni esatte che non influenzano la posizione degli altri elementi*/
-    top: 250px; /* distanza dal titolo */
+    position: absolute;
+    top: 250px;
     width: 30%;
     min-width: 280px;
     min-height: 280px;
@@ -30,12 +29,10 @@ body{
     background-color: #0f4275;
 }
 
-/* Registrazione a sinistra */
 #registrati_div {
     left: 14vw;
 }
 
-/* Login a destra */
 #accedi_div {
     right: 14vw;
 }
@@ -45,7 +42,7 @@ body{
     font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 60px; /* aumenta spazio sotto il titolo */
+    margin-bottom: 60px;
     color: rgb(235, 167, 20);
     padding: 8px;
 }
@@ -132,7 +129,7 @@ nav > button {
 
 }
 nav > button:hover {
-    background-color: #28517a; /* schiarisce del 20% */
+    background-color: #28517a;
 }
 
 .vertical-scroll{

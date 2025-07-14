@@ -11,20 +11,18 @@ import {faShower, faCar, faTableTennisPaddleBall, faMugSaucer, faShirt} from '@f
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function App() {
-    // Hook useState per gestire lo stato dell'utente loggato
     const [currentUser, setCurrentUser] = useState(null);
-    // Stato per la lista dei campi
     const [campi, setCampi] = useState([]);
-    // Stato per la lista delle recensioni
     const [recensioni, setRecensioni] = useState([]);
-    // Stato per gestire la pagina fornita all'utente
     const [currentView, setCurrentView] = useState("pagIniziale");
     const [campoPrenotato, setCampoPrenotato] = useState(null);
 
+    //useEffect utilizzato con secondo argomento vuoto, dunque invocato solo al mount. Recupera da localStorage gli
+    //oggetti accessToken, userId e campoPrenotato. In base alla loro presenza o meno, aggiorna gli stati currentUser,
+    //currentView e campoPrenotato. Successivamente fa fetch agli endpoint /campi e /campi/recensioni per riempire i
+    //corrispettivi stati.
     useEffect(() => {
         const loadInitialData = async () => {
-            // Funzione helper interna a useEffect per le chiamate fetch
-            // perché sono gestiti da loadInitialData
             const fetchDataForEffect = async (endpoint, options = {}) => {
                 const localAccessToken = localStorage.getItem('accessToken');
                 const headers = {
@@ -34,8 +32,6 @@ function App() {
                 if (localAccessToken) {
                     headers['Authorization'] = `Bearer ${localAccessToken}`;
                 }
-
-                // NOTA: Per questo esempio, assumiamo che il token sia valido
 
                 const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers });
                 const responseData = response.status === 204 ? null : await response.json();
@@ -49,7 +45,7 @@ function App() {
             };
 
             const storedUser = localStorage.getItem('user');
-            const token = localStorage.getItem('accessToken'); // Lo leggiamo comunque per decidere il flusso
+            const token = localStorage.getItem('accessToken');
             const campoprenotato = localStorage.getItem('campoPrenotato');
             try {
                 if (campoprenotato) {
@@ -76,31 +72,8 @@ function App() {
         };
         loadInitialData();
     }, []);
-/*useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        const storedUser = localStorage.getItem('user');
 
-        if (token && storedUser) {
-            setCurrentUser(JSON.parse(storedUser));
-            setCurrentView("pagHome");
-
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-            };
-
-            fetch(`${API_BASE_URL}/campi`, { headers })
-                .then(res => res.json())
-                .then(data => setCampi(data.campi || []))
-                .catch(err => console.error("Errore fetch campi iniziale:", err));
-
-            fetch(`${API_BASE_URL}/campi/recensioni`, { headers })
-        .then(res => res.json())
-                .then(data => setRecensioni(data.recensioni || []))
-                .catch(err => console.error("Errore fetch recensioni iniziale:", err));
-        }
-    }, []);*/
-
+    //handler per la Registrazione. Fa richiesta ad /auth/register.
     const handleRegisterSubmit = async (username, email, password) => {
         try {
             const response = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -114,12 +87,15 @@ function App() {
                 window.alert("Registrazione fallita");
                 throw new Error(data?.message || `Errore autenticazione: ${response.status}`);
             }
-
+            window.alert("Registrazione avvenuta con successo! Usa queste credenziali per effettuare il login!");
         } catch (error) {
             console.error(`Errore API per /auth/register:`, error);
         }
     };
 
+    //handler per il login. Fa richiesta ad /auth/login. In caso di risposta positiva, salva accessToken e user nel local
+    //Storage e aggiorna gli stati currentUser e currentView, così da visualizzare la schermata principale. Successivamente
+    // fa richiesta a /campi e /campi/recensioni in modo da poter riempire gli stati
     const handleLoginSubmit = async (email, password) => {
         try {
             const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -161,6 +137,8 @@ function App() {
         }
     };
 
+    //Handler per il logout. Rimuove accessToken e user dal localStorage e aggiorna gli stati riportandoli ai loro valori
+    //di partenza.
     const handleLogout = async () => {
         try {
             await fetch(`${API_BASE_URL}/auth/logout`, {method: 'POST', credentials: 'include'});
@@ -170,17 +148,20 @@ function App() {
         }
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
+        localStorage.removeItem('campoPrenotato');
         setCurrentUser(null);
         setCurrentView("pagIniziale");
         setCampi([]);
         setRecensioni([]);
     };
 
+    //Aggiorna lo stato recensioni, aggiungendo quella appena inserita
     const onRecensioneCreated = function (newRecensioneData) {
         setRecensioni(prevRecensioni => [...prevRecensioni, newRecensioneData.recensione]);
     };
 
-
+    //Handler per l'eliminazione della recensione. Fa richiesta a /campi/:recensioneId e aggiorna lo stato recensioni
+    //rimuovendo quella appena eliminata.
     const handleDeleteRecensione = async (recensioneId) => {
         if (!window.confirm("Sei sicuro di voler eliminare questa recensione?")) return;
         try {
@@ -202,16 +183,16 @@ function App() {
         }
     };
 
-    
-
-   // Cambio questa funzione, SALVANDO TUTTO L'OGGETTO CAMPO:
+    //Imposta lo stato campoPrenotato all'id del campo scelto dall'utente e lo salva nel localStorage. Aggiorna
+    // currentView così da visualizzare il form di prenotazione.
 const handlePrenota = (campoId) => {
-    const campo = campi.find(c => c._id === campoId);
-    setCampoPrenotato(campo._id);
+   // const campo = campi.find(c => c._id === campoId);
+    setCampoPrenotato(campoId);
     setCurrentView("pagPrenotazione");
-    localStorage.setItem('campoPrenotato', campo._id);
+    localStorage.setItem('campoPrenotato', campoId);
 };
 
+//Riporta lo stato campoPrenotato a null, rimuove l'oggetto campoPrenotato dal localStorage e aggiorna currentView.
     const handleAnnulla = function () {
         setCurrentView("pagHome");
         setCampoPrenotato(null);
@@ -222,14 +203,17 @@ const handlePrenota = (campoId) => {
         return (
             <div className="container-form">
                 <div id = "logo-container">
+                    {/*logo*/}
                 <img className="logo" src="https://live.staticflickr.com/65535/54643310871_e2e1569df3_b.jpg"></img>
                 </div>
                 <div id="registrati_div">
+                    {/*form di registrazione*/}
                     <h2 className="form-title">REGISTRATI</h2>
                     <RegForm
                         onRegisterSubmit={handleRegisterSubmit}
                     /></div>
                 <div id="accedi_div" >
+                    {/*form di login*/}
                     <h2 className="form-title">ACCEDI</h2>
                     <LoginForm
                         onSubmitForm={handleLoginSubmit}
@@ -237,11 +221,13 @@ const handlePrenota = (campoId) => {
             </div>
         );
     }
-{/*key={campo._id}*/}
+
     if (currentView == "pagHome") {
         return (
             <div className="home-container">
+                {/*logo*/}
                 <img className="logo" src="https://live.staticflickr.com/65535/54643310871_e2e1569df3_b.jpg"></img>
+                {/*navbar*/}
                 <Navbar
                     onLogout={handleLogout}
                     onAnnulla={handleAnnulla}
@@ -264,6 +250,7 @@ const handlePrenota = (campoId) => {
                     </ul>
                 </div>
                 <div className="vertical-scroll">
+                    {/*lista campi*/}
                     <h2>I NOSTRI CAMPI</h2>
                     {campi.map(campo => (
                         <Campo
@@ -285,15 +272,18 @@ const handlePrenota = (campoId) => {
                 return (
                 <div className="container">
                     <div id = "logo-container1">
+                        {/*logo*/}
                     <img className="logo" src="https://live.staticflickr.com/65535/54643310871_e2e1569df3_b.jpg"></img>
                     </div>
+                    {/*navbar*/}
                     <Navbar
                         onLogout={handleLogout}
                         onAnnulla={handleAnnulla}
                     />
+                    {/*form di prenotazione*/}
                     <PrenotaForm
                         campoId={campoPrenotato}
-                        campo={campi.find(c => c._id === campoPrenotato)?.nome}//new per passare il nome del campo, in fase di prenotazione
+                        campo={campi.find(c => c._id === campoPrenotato)?.nome}
                         onAnnulla={handleAnnulla}
                         setCampoPrenotato={setCampoPrenotato}
                     />

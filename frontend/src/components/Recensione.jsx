@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 function Recensione({ recensione, currentUser, onDeleteRecensione }) {
     const [isAuthor, setIsAuthor] = useState(false);
 
+    //useEffect con secondo argomento vuoto, chiamato solo al mount del componente. Effettua controllo sull'autore
+    //della recensione, impostandone di conseguenza lo stato isAuthor.
     useEffect(() => {
-
         if (currentUser && currentUser.id === recensione.autore._id) {
             setIsAuthor(true);
         } else {
@@ -20,7 +21,8 @@ function Recensione({ recensione, currentUser, onDeleteRecensione }) {
             </div>
             <div className="testo-recensione">
             <p>{recensione.testo}</p>
-            {isAuthor && (
+            {//pulsante di eliminazione recensione mostrato solo se isAuthor è true
+                isAuthor && (
                 <button onClick={() => onDeleteRecensione(recensione._id)}>
                     ELIMINA RECENSIONE
                 </button>
